@@ -442,12 +442,6 @@ class PersonsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
-        foreach($options as $key => $value) {
-            if (!in_array($key, array('id', 'name', 'owner_id', 'org_id', 'email', 'phone', 'visible_to'))) {
-                $_parameters[$key] = $this->val($options, $key);
-            }
-        }
-
         //and invoke the API call request to fetch the response
         $response = Request::get($_queryUrl, $_headers);
 
@@ -519,6 +513,12 @@ class PersonsController extends BaseController
             'phone'    => array_values($this->val($options, 'phone')),
             'visible_to' => APIHelper::prepareFormFields($this->val($options, 'visibleTo'))
         );
+
+        foreach($options as $key => $value) {
+            if (!in_array($key, array('id', 'name', 'owner_id', 'org_id', 'email', 'phone', 'visible_to'))) {
+                $_parameters[$key] = $this->val($options, $key);
+            }
+        }
 
         //call on-before Http callback
         $_httpRequest = new HttpRequest(HttpMethod::PUT, $_headers, $_queryUrl, $_parameters);
