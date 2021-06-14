@@ -442,6 +442,12 @@ class PersonsController extends BaseController
             $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
         }
 
+        foreach($options as $key => $value) {
+            if (!in_array($key, array('id', 'name', 'owner_id', 'org_id', 'email', 'phone', 'visible_to'))) {
+                $_parameters[$key] = $this->val($options, $key);
+            }
+        }
+
         //and invoke the API call request to fetch the response
         $response = Request::get($_queryUrl, $_headers);
 
